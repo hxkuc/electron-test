@@ -1,10 +1,8 @@
 // 先打包mainjs的主进程再打包renderer进程然后执行electron
+const path = require('path')
 const fs = require('fs-extra')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
-const electron = require('electron')
-const { spawn } = require('child_process')
-const path = require('path')
 const WebpackDevServer = require('webpack-dev-server')
 const webpackDevServerConfig = Object.assign({}, webpackConfig.devServer, {
   contentBase: './dist',
@@ -12,7 +10,7 @@ const webpackDevServerConfig = Object.assign({}, webpackConfig.devServer, {
 })
 
 // 构建主进程
-async function buildMain () {
+exports.buildMain = async function () {
   // 当前只拷贝main文件到dist目录下
   console.log('buildMain')
   const mainJsPath = path.join(__dirname, 'main.js')
@@ -21,7 +19,7 @@ async function buildMain () {
 }
 
 // 构建子进程
-function buildRenderer () {
+exports.buildRenderer = function () {
   console.log('buildRenderer')
   return new Promise((resolve, reject) => {
     try {
@@ -44,22 +42,4 @@ function buildRenderer () {
       reject(err)
     }
   })
-  
 }
-
-// 启动electron程序
-function startElectron () {
-  const args = [path.join(__dirname, 'dist/main.js')]
-  console.log(111)
-  spawn(electron, args)
-}
-
-// 程序启动流程
-async function start () {
-  await Promise.all([buildMain(), buildRenderer()])
-  startElectron()
-}
-
-start()
-.then(res => console.log(res))
-.catch(err => console.log(err))

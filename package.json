@@ -6,8 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "pack": "node ./build.js",
+    "dev": "node ./dev.js",
+    "pro": "node ./pro.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "start": "electron ."
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "files": [
+      "apps/**/*"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +30,7 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "electron": "^6.0.9",
+    "electron-builder": "^21.2.0",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.40.2",
