@@ -14,7 +14,7 @@ exports.buildMain = async function () {
   // 当前只拷贝main文件到dist目录下
   console.log('buildMain')
   const mainJsPath = path.join(__dirname, 'main.js')
-  const distMainJsPath = path.join(__dirname, 'dist/main.js')
+  const distMainJsPath = path.join(__dirname, 'build/main.js')
   fs.copySync(mainJsPath, distMainJsPath)
 }
 
@@ -38,6 +38,27 @@ exports.buildRenderer = function () {
         // 处理完成
         resolve()
       }); */
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+
+
+// 构建子进程
+exports.buildRendererPro = function () {
+  console.log('buildRendererPro')
+  return new Promise((resolve, reject) => {
+    try {
+      webpack(webpackConfig, (err, stats) => {
+        if (err || stats.hasErrors()) {
+          // 在这里处理错误
+          reject(err || stats.hasErrors())
+        }
+        // 处理完成
+        resolve()
+      });
     } catch (err) {
       reject(err)
     }

@@ -9,9 +9,18 @@
 const fs = require('fs-extra')
 const path = require('path')
 const buildPath = path.join(__dirname, 'dist')
-const { buildMain, buildRenderer } = require('./build')
+const { buildMain, buildRendererPro } = require('./build')
 const builder = require('electron-builder')
-const { build } = require('./package.json')
+
+const build = {
+  "appId": "your.id",
+  "mac": {
+    "category": "your.app.category.type"
+  },
+  "directories": {
+    "app": "./build"
+  }
+}
 
 // 清空目录
 fs.removeSync(buildPath)
@@ -19,10 +28,17 @@ fs.removeSync(buildPath)
 // 构建资源
 
 function buildResources () {
-  return Promise.all([buildMain(), buildRenderer()])
+  return Promise.all([buildMain(), buildRendererPro()])
+}
+
+function copyPackageJson () {
+  const packagePath = path.join(__dirname, 'package.json')
+  const buildPackagePath = path.join(__dirname, './build/package.json')
+  return fs.copy(packagePath, buildPackagePath)
 }
 
 async function start () {
+  await copyPackageJson()
   await buildResources()
   // 调用打包程序
   await builderPack()

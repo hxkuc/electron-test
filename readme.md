@@ -5,3 +5,4 @@
 4. 配置webpack-dev-server
 5. webpack-dev-server 一些参数的解释
 6. 构建两套环境一套dev一套pro
+7. electron-build一些参数的讲解
