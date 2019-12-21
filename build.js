@@ -3,6 +3,10 @@ const path = require('path')
 const fs = require('fs-extra')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
+
+const mainWebpackConfig = require('./build/webpack/webpack.main.config')
+const rendererWebpackConfig = require('./build/webpack/webpack.renderer.config')
+
 const WebpackDevServer = require('webpack-dev-server')
 const webpackDevServerConfig = Object.assign({}, webpackConfig.devServer, {
   contentBase: './dist',
@@ -13,9 +17,20 @@ const webpackDevServerConfig = Object.assign({}, webpackConfig.devServer, {
 exports.buildMain = async function () {
   // 当前只拷贝main文件到dist目录下
   console.log('buildMain')
-  const mainJsPath = path.join(__dirname, 'main.js')
-  const distMainJsPath = path.join(__dirname, 'build/main.js')
-  fs.copySync(mainJsPath, distMainJsPath)
+  return new Promise((resolve, reject) => {
+    try {
+      webpack(mainWebpackConfig, (err, stats) => {
+        if (err || stats.hasErrors()) {
+          // 在这里处理错误
+          reject(err || stats.hasErrors())
+        }
+        // 处理完成
+        resolve()
+      });
+    } catch (err) {
+      reject(err)
+    }
+  })
 }
 
 // 构建子进程

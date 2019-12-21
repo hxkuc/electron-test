@@ -3,6 +3,7 @@ const electron = require('electron')
 const { spawn } = require('child_process')
 const { buildMain, buildRenderer } = require('./build')
 
+
 // 启动electron程序
 function startElectron () {
   const args = [path.join(__dirname, 'dist/main.js')]

@@ -18,7 +18,7 @@ const build = {
     "category": "your.app.category.type"
   },
   "directories": {
-    "app": "./build"
+    "app": "./build/dist"
   }
 }
 
@@ -33,7 +33,7 @@ function buildResources () {
 
 function copyPackageJson () {
   const packagePath = path.join(__dirname, 'package.json')
-  const buildPackagePath = path.join(__dirname, './build/package.json')
+  const buildPackagePath = path.join(__dirname, './build/dist/package.json')
   return fs.copy(packagePath, buildPackagePath)
 }
 
